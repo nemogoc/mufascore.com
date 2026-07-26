@@ -318,40 +318,27 @@
             function updateCurrentPointAndRatio() {
               const teamAScore = parseInt(localStorage.getItem('teamAScore')) || 0;
               const teamBScore = parseInt(localStorage.getItem('teamBScore')) || 0;
-
-              const currentPoint = teamAScore + teamBScore + 1;
+            
               const totalPoints = teamAScore + teamBScore;
-
-              const cyclePos = totalPoints % 4;
-
-              let ratio;
-              let number;
-
-              switch (cyclePos) {
-                case 0:
-                  ratio = firstRatio;
-                  number = 1;
-                  break;
-                case 1:
-                  ratio = firstRatio === 'FMP' ? 'MMP' : 'FMP';
-                  number = 1;
-                  break;
-                case 2:
-                  ratio = firstRatio === 'FMP' ? 'MMP' : 'FMP';
-                  number = 2;
-                  break;
-                case 3:
-                  ratio = firstRatio;
-                  number = 2;
-                  break;
+            
+              if (totalPoints === 0) {
+                currentRatio = `${firstRatio}1`;
+              } else {
+                const otherRatio = firstRatio === 'FMP' ? 'MMP' : 'FMP';
+            
+                const cycle = [
+                  `${otherRatio}1`,
+                  `${otherRatio}2`,
+                  `${firstRatio}1`,
+                  `${firstRatio}2`
+                ];
+            
+                currentRatio = cycle[(totalPoints - 1) % 4];
               }
-
-              currentRatio = `${ratio}${number}`;
-
-              //currentPointDisplay.textContent = currentPoint;
+            
               totalPointsDisplay.textContent = totalPoints;
               currentRatioDisplay.textContent = currentRatio;
-            };
+            }
 
             function loadFirstRatio() {
               if (localStorage.getItem('firstRatio') === 'MMP') {
